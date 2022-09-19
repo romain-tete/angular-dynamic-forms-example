@@ -14,7 +14,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import {
   ControlsConfiguration,
   FieldConfiguration,
@@ -85,7 +85,9 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
       group.addControl(name, control);
     });
 
-    const sub = group.valueChanges.subscribe(this.valueChanges);
+    const sub = group.valueChanges
+      .pipe(tap(() => console.log(group)))
+      .subscribe(this.valueChanges);
     this.sub.add(sub);
 
     return group;
@@ -98,20 +100,23 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
 
     const validators: ValidatorFn[] = [];
 
-    if (length) {
-      validators.push(Validators.minLength(length));
-      validators.push(Validators.maxLength(length));
-    }
-
-    if (valueType) {
+    if (valueType && valueType === 'numeric') {
       validators.push((control: AbstractControl) => {
-        try {
-          parseInt(control.value);
+        if (typeof control.value !== 'string') {
           return null;
-        } catch (e) {
+        }
+
+        if (Number.isInteger(control.value) || control.value.length === 0) {
+          return null;
+        } else {
           return { value_type: true };
         }
       });
+    }
+
+    if (length) {
+      validators.push(Validators.minLength(length));
+      validators.push(Validators.maxLength(length));
     }
 
     return validators;
