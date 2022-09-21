@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MaterialShowroomComponent } from './components/material-showroom.component';
+import { MaterialDemoComponent } from './components/material-demo.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MaterialShowroomComponent,
+    component: MaterialDemoComponent,
   },
 ];
 

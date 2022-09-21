@@ -3,34 +3,31 @@ import {
   Injector,
   Input,
   OnInit,
-  Provider,
   StaticProvider,
   ViewContainerRef,
 } from '@angular/core';
 import {
   AbstractControl,
-  ControlContainer,
   FormArray,
   FormControl,
   FormGroup,
-  NgControl,
 } from '@angular/forms';
 import {
   FieldConfiguration,
   DYNAMIC_CONTROL_CONFIG,
-  ControlsConfiguration,
-} from './dynamic-form.types';
+  ControlConfiguration,
+} from '../dynamic-form.types';
 
 @Directive({
-  selector: 'my-form-control',
+  selector: '[myFormControl]',
 })
 export class MyFormControlDirective implements OnInit {
   @Input() rootForm!: FormGroup;
-  @Input() controlConfiguration!: FieldConfiguration;
-  @Input() mapping!: ControlsConfiguration;
+  @Input() fieldConfiguration!: FieldConfiguration;
+  @Input() controlConfiguration!: ControlConfiguration;
 
   private get control(): AbstractControl | null {
-    return this.rootForm.get(this.controlConfiguration.name);
+    return this.rootForm.get(this.fieldConfiguration.name);
   }
 
   constructor(
@@ -39,15 +36,15 @@ export class MyFormControlDirective implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const { type } = this.mapping ?? {};
+    const { componentType } = this.controlConfiguration ?? {};
     const providers: StaticProvider[] = [
       {
         provide: DYNAMIC_CONTROL_CONFIG,
-        useValue: this.controlConfiguration,
+        useValue: this.fieldConfiguration,
       },
     ];
 
-    switch (this.mapping.controlType) {
+    switch (this.controlConfiguration.controlType) {
       case 'field':
         providers.push({
           provide: FormControl,
@@ -73,6 +70,6 @@ export class MyFormControlDirective implements OnInit {
       providers,
     });
 
-    this.viewContainerRef.createComponent<any>(type, { injector });
+    this.viewContainerRef.createComponent<any>(componentType, { injector });
   }
 }

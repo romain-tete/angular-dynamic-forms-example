@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Directive,
   EventEmitter,
@@ -16,41 +17,29 @@ import {
 } from '@angular/forms';
 import { Subscription, tap } from 'rxjs';
 import {
-  ControlsConfiguration,
+  ControlConfiguration,
   FieldConfiguration,
   ControlTypesMappings,
   DYNAMIC_FORM_MAPPING,
-} from './dynamic-form.types';
+} from '../../dynamic-form.types';
 
 @Component({
   selector: 'my-form',
-  template: `
-    <my-form-control
-      *ngFor="let control of config"
-      [rootForm]="form"
-      [controlConfiguration]="control"
-      [mapping]="getMapping(control.type)"
-    ></my-form-control>
-  `,
-  styles: [
-    `
-      :host {
-        color: black;
-        padding: 1rem;
-      }
-    `,
-  ],
+  templateUrl: './dynamic-form.component.html',
+  styleUrls: ['./dynamic-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyFormComponent<T = any> implements OnInit, OnDestroy {
   @Input() value: any;
-  @Input() config: FieldConfiguration[] | null = null;
+  @Input('config') fields: FieldConfiguration[] | null = null;
   @Output() valueChanges: EventEmitter<T> = new EventEmitter<T>();
 
   form!: FormGroup;
   private sub = new Subscription();
 
   constructor(
-    @Inject(DYNAMIC_FORM_MAPPING) private _mapping: ControlTypesMappings
+    @Inject(DYNAMIC_FORM_MAPPING)
+    private _controlsConfigurationMapping: ControlTypesMappings
   ) {}
 
   ngOnInit(): void {
@@ -61,16 +50,16 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  getMapping(type: string): ControlsConfiguration {
-    return this._mapping[type];
+  getControlConfiguration(type: string): ControlConfiguration {
+    return this._controlsConfigurationMapping[type];
   }
 
   protected createForm(value: any): FormGroup<any> {
     const group = new FormGroup<any>({});
 
-    this.config?.map((c) => {
+    this.fields?.map((c) => {
       const { type, validators: validatorsConfiguration, name } = c;
-      const typeConfig = this._mapping[type];
+      const typeConfig = this._controlsConfigurationMapping[type];
 
       if (!type) {
         throw new Error(

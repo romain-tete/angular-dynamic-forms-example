@@ -4,13 +4,14 @@ import {
   ControlTypesMappings,
   DYNAMIC_FORM_MAPPING,
 } from './dynamic-form.types';
-import { MyFormComponent } from './dynamic-form.component';
-import { MyFormControlDirective } from './dynamic-form-control.directive';
+import { MyFormComponent } from './directives/dynamic-form/dynamic-form.component';
+import { MyFormControlDirective } from './directives/dynamic-form-control.directive';
+import { ShowroomComponent } from './directives/showroom/showroom.component';
 
 @NgModule({
-  declarations: [MyFormComponent, MyFormControlDirective],
+  declarations: [MyFormComponent, MyFormControlDirective, ShowroomComponent],
   imports: [CommonModule],
-  exports: [MyFormComponent],
+  exports: [MyFormComponent, ShowroomComponent],
 })
 export class DynamicFormModule {
   static configure(

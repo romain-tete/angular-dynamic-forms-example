@@ -5,12 +5,12 @@ import { BootstrapAddressComponent } from './forms/bootstrap-address/bootstrap-a
 import { BootstrapFormsRoutingModule } from './bootstrap-forms-routing.module';
 import { DynamicFormModule } from '../dynamic-form/dynamic-form.module';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BootstrapShowroomComponent } from './components/bootstrap-showroom.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BootstrapDemoComponent } from './bootstrap-demo.component';
 
 @NgModule({
   declarations: [
-    BootstrapShowroomComponent,
+    BootstrapDemoComponent,
     BootstrapInputComponent,
     BootstrapAddressComponent,
   ],
@@ -20,12 +20,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     BootstrapFormsRoutingModule,
     DynamicFormModule.configure({
       text: {
-        type: BootstrapInputComponent,
+        componentType: BootstrapInputComponent,
         controlFactory: (value?: string) => new FormControl(),
         controlType: 'field',
       },
       address: {
-        type: BootstrapAddressComponent,
+        componentType: BootstrapAddressComponent,
         controlFactory: (value?: any) =>
           new FormGroup({
             address1: new FormControl(),

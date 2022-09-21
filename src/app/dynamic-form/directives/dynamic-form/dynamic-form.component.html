@@ -1,0 +1,6 @@
+<ng-container myFormControl
+      *ngFor="let field of fields"
+      [rootForm]="form"
+      [fieldConfiguration]="field"
+      [controlConfiguration]="getControlConfiguration(field.type)">
+</ng-container>

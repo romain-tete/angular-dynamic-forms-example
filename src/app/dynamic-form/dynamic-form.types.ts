@@ -16,16 +16,16 @@ export interface FieldConfiguration {
   };
 }
 
-export interface ControlsConfiguration<
+export interface ControlConfiguration<
   T = any,
   K extends AbstractControl = AbstractControl
 > {
-  type: Type<any>;
+  componentType: Type<any>;
   controlType: 'field' | 'group' | 'array';
   controlFactory: (value: T) => K;
 }
 
-export type ControlTypesMappings = Record<string, ControlsConfiguration>;
+export type ControlTypesMappings = Record<string, ControlConfiguration>;
 
 export const DYNAMIC_FORM_CONFIG = new InjectionToken('DYNAMIC_FORM_CONFIG');
 export const DYNAMIC_CONTROL_CONFIG = new InjectionToken<FieldConfiguration>(
