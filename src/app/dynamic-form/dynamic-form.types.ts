@@ -1,14 +1,18 @@
 import { InjectionToken, Type } from '@angular/core';
-import { AbstractControl, Validator, ValidatorFn } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 export interface FieldConfiguration {
-  label: string;
   name: string;
   type: string;
-  options?: {
+
+  viewOptions: {
+    label: string;
+    placeholder?: string;
+  } & { [key: string]: string | number };
+
+  validators?: {
     length?: number;
     valueType?: 'numeric';
-    placeholder?: string;
   };
 }
 
@@ -17,7 +21,7 @@ export interface ControlsConfiguration<
   K extends AbstractControl = AbstractControl
 > {
   type: Type<any>;
-  is_container: boolean;
+  controlType: 'field' | 'group' | 'array';
   controlFactory: (value: T) => K;
 }
 

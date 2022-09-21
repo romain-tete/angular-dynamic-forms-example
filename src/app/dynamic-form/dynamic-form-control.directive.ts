@@ -4,9 +4,17 @@ import {
   Input,
   OnInit,
   Provider,
+  StaticProvider,
   ViewContainerRef,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlContainer,
+  FormArray,
+  FormControl,
+  FormGroup,
+  NgControl,
+} from '@angular/forms';
 import {
   FieldConfiguration,
   DYNAMIC_CONTROL_CONFIG,
@@ -21,6 +29,10 @@ export class MyFormControlDirective implements OnInit {
   @Input() controlConfiguration!: FieldConfiguration;
   @Input() mapping!: ControlsConfiguration;
 
+  private get control(): AbstractControl | null {
+    return this.rootForm.get(this.controlConfiguration.name);
+  }
+
   constructor(
     private viewContainerRef: ViewContainerRef,
     private injector: Injector
@@ -28,26 +40,37 @@ export class MyFormControlDirective implements OnInit {
 
   ngOnInit(): void {
     const { type } = this.mapping ?? {};
+    const providers: StaticProvider[] = [
+      {
+        provide: DYNAMIC_CONTROL_CONFIG,
+        useValue: this.controlConfiguration,
+      },
+    ];
 
-    const controlProvider: Provider = this.mapping?.is_container
-      ? {
-          provide: FormGroup,
-          useValue: this.rootForm?.get(this.controlConfiguration?.name),
-        }
-      : {
+    switch (this.mapping.controlType) {
+      case 'field':
+        providers.push({
           provide: FormControl,
-          useValue: this.rootForm?.get(this.controlConfiguration?.name),
-        };
+          useValue: this.control,
+        });
+        break;
+      case 'array':
+        providers.push({
+          provide: FormArray,
+          useValue: this.control,
+        });
+        break;
+      case 'group':
+        providers.push({
+          provide: FormGroup,
+          useValue: this.control,
+        });
+        break;
+    }
 
     const injector = Injector.create({
       parent: this.injector,
-      providers: [
-        controlProvider,
-        {
-          provide: DYNAMIC_CONTROL_CONFIG,
-          useValue: this.controlConfiguration,
-        },
-      ],
+      providers,
     });
 
     this.viewContainerRef.createComponent<any>(type, { injector });

@@ -5,17 +5,21 @@ const routes: Routes = [
   {
     path: 'material',
     loadChildren: () =>
-      import('./config-1/config-1.module').then((m) => m.Config1Module),
+      import('./material/material-forms.module').then(
+        (m) => m.MaterialFormsModule
+      ),
   },
   {
     path: 'bootstrap',
     loadChildren: () =>
-      import('./config-2/config-2.module').then((m) => m.Config2Module),
+      import('./bootstrap/bootstrap-forms.module').then(
+        (m) => m.BootstrapFormsModule
+      ),
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'config-1',
+    redirectTo: 'material',
   },
 ];
 

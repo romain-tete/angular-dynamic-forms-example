@@ -69,7 +69,7 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
     const group = new FormGroup<any>({});
 
     this.config?.map((c) => {
-      const { type, options, name, label } = c;
+      const { type, validators: validatorsConfiguration, name } = c;
       const typeConfig = this._mapping[type];
 
       if (!type) {
@@ -79,7 +79,7 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
       }
 
       const control = typeConfig.controlFactory(value?.[name] ?? null);
-      const validators = this.getValidators(options);
+      const validators = this.getValidators(validatorsConfiguration);
 
       control.addValidators(validators);
       group.addControl(name, control);
@@ -94,7 +94,7 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
   }
 
   protected getValidators(
-    options: FieldConfiguration['options']
+    options: FieldConfiguration['validators']
   ): ValidatorFn[] {
     const { length, valueType } = options ?? {};
 

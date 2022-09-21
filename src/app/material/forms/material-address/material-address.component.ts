@@ -2,11 +2,11 @@ import { Component, Optional } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'config-1-address',
-  templateUrl: './address.component.html',
-  styleUrls: ['./address.component.scss'],
+  selector: 'material-address',
+  templateUrl: './material-address.component.html',
+  styleUrls: ['./material-address.component.scss'],
 })
-export class AddressComponent {
+export class MaterialAddressComponent {
   protected get group(): FormGroup<any> {
     if (this._group) {
       return this._group;

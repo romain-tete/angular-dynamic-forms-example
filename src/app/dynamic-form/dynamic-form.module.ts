@@ -13,7 +13,7 @@ import { MyFormControlDirective } from './dynamic-form-control.directive';
   exports: [MyFormComponent],
 })
 export class DynamicFormModule {
-  static forRoot(
+  static configure(
     config: ControlTypesMappings = {}
   ): ModuleWithProviders<DynamicFormModule> {
     return {

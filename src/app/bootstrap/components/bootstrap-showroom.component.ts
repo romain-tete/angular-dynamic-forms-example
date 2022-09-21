@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldConfiguration } from '../dynamic-form/dynamic-form.types';
+import { FieldConfiguration } from '../../dynamic-form/dynamic-form.types';
 
 @Component({
-  selector: 'config-1-index',
+  selector: 'bootstrap-showroom',
   template: `<my-form
     [config]="config"
     (valueChanges)="onValueChange($event)"
@@ -10,28 +10,37 @@ import { FieldConfiguration } from '../dynamic-form/dynamic-form.types';
   styles: [``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Config1IndexComponent {
+export class BootstrapShowroomComponent {
   config: FieldConfiguration[] = [
     {
-      label: 'Full Name',
       name: 'full_name',
       type: 'text',
-      options: { placeholder: 'John Do...' },
+
+      viewOptions: {
+        label: 'Full Name',
+        placeholder: 'John Do...',
+      },
     },
     {
-      label: 'Zipcode',
       name: 'zipcode',
       type: 'text',
-      options: {
+
+      viewOptions: {
+        label: 'Zipcode',
         placeholder: '01230',
+      },
+
+      validators: {
         valueType: 'numeric',
         length: 5,
       },
     },
     {
-      label: 'Address',
       name: 'address',
       type: 'address',
+      viewOptions: {
+        label: 'Address',
+      },
     },
   ];
 

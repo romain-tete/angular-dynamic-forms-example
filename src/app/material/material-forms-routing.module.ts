@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Config2IndexComponent } from './index.component';
+import { MaterialShowroomComponent } from './components/material-showroom.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: Config2IndexComponent,
+    component: MaterialShowroomComponent,
   },
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class Config2RoutingModule {}
+export class MaterialFormsRoutingModule {}
