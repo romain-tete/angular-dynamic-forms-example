@@ -95,7 +95,7 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
           return null;
         }
 
-        if (Number.isInteger(control.value) || control.value.length === 0) {
+        if (Number.parseInt(control.value) || control.value.length === 0) {
           return null;
         } else {
           return { value_type: true };
