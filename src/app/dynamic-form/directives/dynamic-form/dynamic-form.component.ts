@@ -57,8 +57,8 @@ export class MyFormComponent<T = any> implements OnInit, OnDestroy {
   protected createForm(value: any): FormGroup<any> {
     const group = new FormGroup<any>({});
 
-    this.fields?.map((c) => {
-      const { type, validators: validatorsConfiguration, name } = c;
+    this.fields?.map((field) => {
+      const { type, validators: validatorsConfiguration, name } = field;
       const typeConfig = this._controlsConfigurationMapping[type];
 
       if (!type) {

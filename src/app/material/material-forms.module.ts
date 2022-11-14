@@ -26,7 +26,7 @@ import { MaterialDemoComponent } from './components/material-demo.component';
     DynamicFormModule.configure({
       text: {
         componentType: MaterialInputComponent,
-        controlFactory: (value?: string) => new FormControl(),
+        controlFactory: (value?: string) => new FormControl(value),
         controlType: 'field',
       },
       address: {
